@@ -91,7 +91,6 @@ function begin() {
             }
             yield sleep(10);
             time += 1;
-            console.log(particles.length);
         }
     });
 }
@@ -116,6 +115,7 @@ function spawnListeners() {
             spawnCountMultiplier = Number(spawnCountSlider.value);
             spawnCountSliderValue.textContent = spawnCountSlider.value;
         });
+        let xd;
     });
 }
 // Source - https://stackoverflow.com/a/37764963

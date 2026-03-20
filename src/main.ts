@@ -115,7 +115,6 @@ async function begin() {
 
         await sleep(10);
         time += 1;
-        console.log(particles.length);
     }
 }
 
@@ -145,7 +144,6 @@ async function spawnListeners() {
         spawnCountMultiplier = Number(spawnCountSlider.value);
         spawnCountSliderValue.textContent = spawnCountSlider.value;
     })
-
 }
 
 
