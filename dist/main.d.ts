@@ -21,7 +21,11 @@ declare class Particle {
 }
 declare let midx: number;
 declare let midy: number;
+declare let spawnFrequency: number;
+declare let speedModifier: number;
+declare let spawnCountMultiplier: number;
 declare function generateParticles(time: number): Particle[];
 declare function begin(): Promise<void>;
+declare function spawnListeners(): Promise<void>;
 declare function sleep(ms: number): Promise<unknown>;
 //# sourceMappingURL=main.d.ts.map

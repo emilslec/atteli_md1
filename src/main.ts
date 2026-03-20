@@ -58,13 +58,17 @@ class Particle {
 let midx = canvas.width / 2;
 let midy = canvas.height / 2;
 
+let spawnFrequency = 10;
+let speedModifier = 5;
+let spawnCountMultiplier = 5;
+
 // returns random particles
 function generateParticles(time: number): Particle[] {
-    let count = 5 + Math.random() * 5;
+    let count = 5 + Math.random() * spawnCountMultiplier;
 
     let particles = []
     for (let i = 0; i < count; i++) {
-        let speed = 1 + Math.random() * 5;
+        let speed = 1 + Math.random() * speedModifier;
         let angle = Math.random() * 360;
         let rgb = {r: Math.random() * 360, g: Math.random() * 360, b: Math.random() * 360};
         let radius = 20 + Math.random() * 20;
@@ -74,20 +78,23 @@ function generateParticles(time: number): Particle[] {
     return particles;
 }
 
+
 async function begin() {
 
     let time = 0;
     let particles: Particle[] = [];
 
+    await sleep(1000);
+    await spawnListeners();
+
     while(true) {
 
-        if(time % 10 == 0) {
+        if(time % spawnFrequency == 0) {
             particles = particles.concat(generateParticles(time));
         }
 
         // delete current content
         ctx.clearRect(0, 0, canvas.width, canvas.height)
-
 
         let toRemove: Number[] = [];
         let i = 0;
@@ -108,10 +115,37 @@ async function begin() {
 
         await sleep(10);
         time += 1;
-
         console.log(particles.length);
-        if(particles.length == 0) {break;}
     }
+}
+
+
+async function spawnListeners() {
+    // Spawn frequency
+    const slider = document.getElementById("freqSlider") as HTMLInputElement;
+    const sliderValue = document.getElementById("freqSliderValue") as HTMLCanvasElement;
+
+    slider.addEventListener("input", () => {
+        spawnFrequency = Number(slider.value);
+        sliderValue.textContent = slider.value;
+    })
+
+    const speedSlider = document.getElementById("speedSlider") as HTMLInputElement;
+    const speedSliderValue = document.getElementById("speedSliderValue") as HTMLCanvasElement;
+
+    speedSlider.addEventListener("input", () => {
+        speedModifier = Number(speedSlider.value);
+        speedSliderValue.textContent = speedSlider.value;
+    })
+
+    const spawnCountSlider = document.getElementById("spawnCountSlider") as HTMLInputElement;
+    const spawnCountSliderValue = document.getElementById("spawnCountSliderValue") as HTMLCanvasElement;
+
+    spawnCountSlider.addEventListener("input", () => {
+        spawnCountMultiplier = Number(spawnCountSlider.value);
+        spawnCountSliderValue.textContent = spawnCountSlider.value;
+    })
+
 }
 
 

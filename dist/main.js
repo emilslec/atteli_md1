@@ -43,12 +43,15 @@ class Particle {
 }
 let midx = canvas.width / 2;
 let midy = canvas.height / 2;
+let spawnFrequency = 10;
+let speedModifier = 5;
+let spawnCountMultiplier = 5;
 // returns random particles
 function generateParticles(time) {
-    let count = 5 + Math.random() * 5;
+    let count = 5 + Math.random() * spawnCountMultiplier;
     let particles = [];
     for (let i = 0; i < count; i++) {
-        let speed = 1 + Math.random() * 5;
+        let speed = 1 + Math.random() * speedModifier;
         let angle = Math.random() * 360;
         let rgb = { r: Math.random() * 360, g: Math.random() * 360, b: Math.random() * 360 };
         let radius = 20 + Math.random() * 20;
@@ -61,8 +64,10 @@ function begin() {
     return __awaiter(this, void 0, void 0, function* () {
         let time = 0;
         let particles = [];
+        yield sleep(1000);
+        yield spawnListeners();
         while (true) {
-            if (time % 10 == 0) {
+            if (time % spawnFrequency == 0) {
                 particles = particles.concat(generateParticles(time));
             }
             // delete current content
@@ -87,10 +92,30 @@ function begin() {
             yield sleep(10);
             time += 1;
             console.log(particles.length);
-            if (particles.length == 0) {
-                break;
-            }
         }
+    });
+}
+function spawnListeners() {
+    return __awaiter(this, void 0, void 0, function* () {
+        // Spawn frequency
+        const slider = document.getElementById("freqSlider");
+        const sliderValue = document.getElementById("freqSliderValue");
+        slider.addEventListener("input", () => {
+            spawnFrequency = Number(slider.value);
+            sliderValue.textContent = slider.value;
+        });
+        const speedSlider = document.getElementById("speedSlider");
+        const speedSliderValue = document.getElementById("speedSliderValue");
+        speedSlider.addEventListener("input", () => {
+            speedModifier = Number(speedSlider.value);
+            speedSliderValue.textContent = speedSlider.value;
+        });
+        const spawnCountSlider = document.getElementById("spawnCountSlider");
+        const spawnCountSliderValue = document.getElementById("spawnCountSliderValue");
+        spawnCountSlider.addEventListener("input", () => {
+            spawnCountMultiplier = Number(spawnCountSlider.value);
+            spawnCountSliderValue.textContent = spawnCountSlider.value;
+        });
     });
 }
 // Source - https://stackoverflow.com/a/37764963
