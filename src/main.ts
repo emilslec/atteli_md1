@@ -36,6 +36,7 @@ class Particle {
         this.x += xdist;
         let ydist = -Math.sin(this.angle * Math.PI / 180) * this.speed;
         this.y += ydist;
+        // decrease the radius a bit
         this.radius *= 0.995
     }
 
@@ -70,6 +71,7 @@ function generateParticles(time: number): Particle[] {
     for (let i = 0; i < count; i++) {
         let speed = 1 + Math.random() * speedModifier;
         let angle = Math.random() * 360;
+        // random color
         let rgb = {r: Math.random() * 360, g: Math.random() * 360, b: Math.random() * 360};
         let radius = 20 + Math.random() * 20;
         let deadTime = 100 + Math.random() * 100 + time;
@@ -84,6 +86,7 @@ async function begin() {
     let time = 0;
     let particles: Particle[] = [];
 
+    // wait for all HTML elements to spawn
     await sleep(1000);
     await spawnListeners();
 
@@ -98,6 +101,7 @@ async function begin() {
 
         let toRemove: Number[] = [];
         let i = 0;
+
         // loop over all particles and draw / prepare remove
         for(const particle of particles) {
             if(particle.isDead(time)) {
@@ -108,6 +112,7 @@ async function begin() {
             }
             i++;
         }
+
         // remove all dead particles
         for(const ind in toRemove.reverse()) {
             particles.splice(Number(ind), 1);
@@ -118,9 +123,8 @@ async function begin() {
     }
 }
 
-
+// add all listeners for sliders
 async function spawnListeners() {
-    // Spawn frequency
     const slider = document.getElementById("freqSlider") as HTMLInputElement;
     const sliderValue = document.getElementById("freqSliderValue") as HTMLCanvasElement;
 
